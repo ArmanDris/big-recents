@@ -3,16 +3,81 @@
 <head>
     <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-eval' 'unsafe-inline' vscode-resource:; style-src vscode-resource: 'unsafe-inline';">
     <style>
-        h1 {
-            color: red;
+        * {
+            padding: 0;
+            margin: 0;
         }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        h1 {
+            font-size: 46px;
+            line-height: 3em;
+            font-weight: normal;
+        }
+
+        li {
+            width: 55vw;
+            list-style: none;
+            margin: 1vh;
+            border-radius: 14px;
+            padding: 20px;
+            padding-bottom: 26px;
+            cursor: pointer;
+            transition: 750ms;
+        }
+
+        li:hover {
+            background: #ffffff20;
+        }
+
+        h2 {
+            font-size: 26px;
+            padding-bottom: 3px;
+            font-weight: normal;
+        }
+
+        p {
+            color: #0098ff;
+            font-size: 14px;
+        }
+
     </style>
 </head>
 <body>
-    <h1>Hello extension.js</h1>
+    <h1>Welcome</h1>
+    <ul>
+        <li>
+            <h2>Sudoku</h2>
+            <p>/Users/armandrismir/Documents/vscode-extension-samples/webview-sample/tsconfig.json</p>
+        </li>
+    </ul>
+    <ul>
+        <li>
+            <h2>Chess</h2>
+            <p>/Users/armandrismir/Documents/vscode-extension-samples/webview-sample/tsconfig.json</p>
+        </li>
+    </ul>
+    <ul>
+        <li>
+            <h2>website</h2>
+            <p>/Users/armandrismir/Documents/vscode-extension-samples/webview-sample/tsconfig.json</p>
+        </li>
+    </ul>
+    <ul>
+        <li>
+            <h2>Title</h2>
+            <p>/Users/armandrismir/Documents/vscode-extension-samples/webview-sample/tsconfig.json</p>
+        </li>
+    </ul>
 
     <script>
-        
+
     </script>
 </body>
 </html>

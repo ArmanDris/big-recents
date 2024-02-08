@@ -9,6 +9,22 @@ function getHtmlContent(context) {
 	return fs.readFileSync(indexPath, 'utf8');
 }
 
+function showWelcomePage(context) {
+	const panel = vscode.window.createWebviewPanel(
+		'homePage',
+		'Big Welcome',
+		vscode.ViewColumn.One,
+		{
+			enableScripts: true
+		}
+	);
+
+	const iconPath = vscode.Uri.file(path.join(context.extensionPath, 'src', 'sun.png'));
+	panel.iconPath = iconPath;
+
+	panel.webview.html = getHtmlContent(context);
+}
+
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 
@@ -16,7 +32,8 @@ function getHtmlContent(context) {
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
-
+	showWelcomePage(context);
+	console.log('My extension is now active!');
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
 
@@ -25,17 +42,7 @@ function activate(context) {
 	// The commandId parameter must match the command field in package.json
 	let disposable = vscode.commands.registerCommand('big-welcome.Big-Welcome', function () {
 		// The code you place here will be executed every time your command is executed
-		const panel = vscode.window.createWebviewPanel(
-			'homePage',
-			'Big Welcome',
-			vscode.ViewColumn.One,
-			{
-				enableScripts: true
-			}
-		);
-
-		panel.webview.html = getHtmlContent(context);
-
+		showWelcomePage(context);
 	});
 
 	context.subscriptions.push(disposable);
