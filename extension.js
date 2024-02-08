@@ -23,7 +23,7 @@ function activate(context) {
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with  registerCommand
 	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('big-recents.Big-Welcome', function () {
+	let disposable = vscode.commands.registerCommand('big-welcome.Big-Welcome', function () {
 		// The code you place here will be executed every time your command is executed
 		const panel = vscode.window.createWebviewPanel(
 			'homePage',

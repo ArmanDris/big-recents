@@ -1,7 +1,7 @@
 {
-  "name": "big-recents",
-  "displayName": "Big Recents",
-  "description": "homepage that displays recents projects in big juicy letters",
+  "name": "big-welcome",
+  "displayName": "Big Welcome",
+  "description": "homepage that displays recent projects in big juicy letters",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.86.0"
@@ -15,7 +15,7 @@
   "main": "./extension.js",
   "contributes": {
     "commands": [{
-      "command": "big-recents.Big-Welcome",
+      "command": "big-welcome.Big-Welcome",
       "title": "Big Welcome"
     }]
   },
