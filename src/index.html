@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-eval' 'unsafe-inline' vscode-resource:; style-src vscode-resource: 'unsafe-inline';">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'none'; script-src 'unsafe-eval' 'unsafe-inline' vscode-resource:; style-src vscode-resource: 'unsafe-inline';">
     <style>
         * {
             padding: 0;
@@ -30,10 +32,12 @@
             padding-bottom: 26px;
             cursor: pointer;
             transition: 750ms;
+            overflow-x: hidden;
         }
 
         li:hover {
             background: #ffffff20;
+            overflow-x: auto;
         }
 
         h2 {
@@ -42,42 +46,67 @@
             font-weight: normal;
         }
 
-        p {
+        a {
             color: #0098ff;
-            font-size: 14px;
+            font-size: 16px;
+            width: 100%;
+            white-space: nowrap;
         }
-
     </style>
 </head>
+
 <body>
     <h1>Welcome</h1>
     <ul>
-        <li>
+        <li class="projectItem">
+            <h2>Webview Sample</h2>
+            <a class="unexpandedPath">~/Documents/vscode-extension-samples/webview-sample/</a>
+        </li>
+        <li class="projectItem">
+            <h2>Website</h2>
+            <a class="unexpandedPath">~/Documents/website</a>
+        </li>
+        <li class="projectItem">
+            <h2>CPSC330</h2>
+            <a class="unexpandedPath">~/Documents/CS330/</a>
+        </li>
+        <li class="projectItem">
             <h2>Sudoku</h2>
-            <p>/Users/armandrismir/Documents/vscode-extension-samples/webview-sample/tsconfig.json</p>
-        </li>
-    </ul>
-    <ul>
-        <li>
-            <h2>Chess</h2>
-            <p>/Users/armandrismir/Documents/vscode-extension-samples/webview-sample/tsconfig.json</p>
-        </li>
-    </ul>
-    <ul>
-        <li>
-            <h2>website</h2>
-            <p>/Users/armandrismir/Documents/vscode-extension-samples/webview-sample/tsconfig.json</p>
-        </li>
-    </ul>
-    <ul>
-        <li>
-            <h2>Title</h2>
-            <p>/Users/armandrismir/Documents/vscode-extension-samples/webview-sample/tsconfig.json</p>
+            <a class="unexpandedPath">~/Documents/Sudoku</a>
         </li>
     </ul>
 
     <script>
+        const vscode = acquireVsCodeApi();
 
+
+        // const button = document.getElementById('project');
+        // const unexpandedPath = document.getElementById('unexpandedPath').textContent;
+        // button.addEventListener('click', () => {
+        //     // Send a message from the WebView to the extension
+        //     vscode.postMessage({
+        //         command: 'openWorkspace',
+        //         unexpanded_path: unexpandedPath,
+        //     });
+        // });
+
+        const projectItems = document.querySelectorAll('.projectItem');
+        projectItems.forEach(function (item) {
+            item.addEventListener('click', function () {
+                const pathElement = item.querySelector('.unexpandedPath');
+                
+                if (!pathElement) 
+                    return;
+
+                const unexpandedPath = pathElement.textContent;
+                vscode.postMessage({
+                    command: 'openWorkspace',
+                    unexpanded_path: unexpandedPath,
+                });
+
+            });
+        });
     </script>
 </body>
+
 </html>

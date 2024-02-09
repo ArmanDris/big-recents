@@ -1,12 +1,26 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 const vscode = require('vscode');
 const path = require('path');
 const fs = require('fs');
+const os = require('os');
 
 function getHtmlContent(context) {
 	const indexPath = path.join(context.extensionPath, 'src', 'index.html');
 	return fs.readFileSync(indexPath, 'utf8');
+}
+
+function expandHomeDir(unexpanded_path) {
+    if (unexpanded_path.startsWith('~')) {
+        // Replace '~' with the full path to the user's home directory
+        return path.join(os.homedir(), unexpanded_path.slice(1));
+    }
+	
+    return unexpanded_path;
+}
+
+function openWorkspaceFunction(unexpanded_path) {
+	const path = expandHomeDir(unexpanded_path);
+	const workspaceUri = vscode.Uri.file(path);
+	vscode.commands.executeCommand('vscode.openFolder', workspaceUri);
 }
 
 function showWelcomePage(context) {
@@ -22,33 +36,49 @@ function showWelcomePage(context) {
 	const iconPath = vscode.Uri.file(path.join(context.extensionPath, 'src', 'sun.png'));
 	panel.iconPath = iconPath;
 
+	panel.webview.onDidReceiveMessage(
+		message => {
+			switch (message.command) {
+				case 'openWorkspace': openWorkspaceFunction(message.unexpanded_path); break;
+			}
+		},
+		undefined,
+		context.subscriptions
+	);
+
 	panel.webview.html = getHtmlContent(context);
 }
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
+function saveWorkspaces() {
+	const workspaces = vscode.workspace.workspaceFolders?.map(folder => folder.uri.toString());
+	console.log(workspaces);
+}
 
 /**
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
-	showWelcomePage(context);
-	console.log('My extension is now active!');
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with  registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('big-welcome.Big-Welcome', function () {
-		// The code you place here will be executed every time your command is executed
+	const hasOpenWorkspace = vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0;
+
+	if (hasOpenWorkspace)
+		return;
+
+	showWelcomePage(context);
+
+	let workSpaceListener = vscode.workspace.onDidChangeConfiguration((event) => {
+		saveWorkspaces();
+	});
+
+	let commandShowWelcome = vscode.commands.registerCommand('big-welcome.Big-Welcome', function () {
 		showWelcomePage(context);
 	});
 
-	context.subscriptions.push(disposable);
+	context.subscriptions.push(workSpaceListener);
+	context.subscriptions.push(commandShowWelcome);
 }
 
-// This method is called when your extension is deactivated
+// Deconstructor
 function deactivate() {}
 
 module.exports = {
