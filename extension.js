@@ -9,12 +9,12 @@ function getHtmlContent(context) {
 }
 
 function expandHomeDir(unexpanded_path) {
-    if (unexpanded_path.startsWith('~')) {
-        // Replace '~' with the full path to the user's home directory
-        return path.join(os.homedir(), unexpanded_path.slice(1));
-    }
-	
-    return unexpanded_path;
+	if (unexpanded_path.startsWith('~')) {
+		// Replace '~' with the full path to the user's home directory
+		return path.join(os.homedir(), unexpanded_path.slice(1));
+	}
+
+	return unexpanded_path;
 }
 
 function openWorkspaceFunction(unexpanded_path) {
@@ -49,9 +49,24 @@ function showWelcomePage(context) {
 	panel.webview.html = getHtmlContent(context);
 }
 
-function saveWorkspaces() {
-	const workspaces = vscode.workspace.workspaceFolders?.map(folder => folder.uri.toString());
-	console.log(workspaces);
+function saveWorkspace(context) {
+	const homeDirectory = os.homedir();
+	const workspace = vscode.workspace.workspaceFolders?.map(folder => folder.uri.fsPath.replace(homeDirectory, '~'));
+
+	if (!workspace || workspace.length === 0)
+		return;
+
+	const first_folder = workspace[0];
+	const old_workspace = context.globalState.get('workspace', []);
+
+	if (old_workspace.includes(first_folder))
+		return;
+
+	const updated_workspace = [...old_workspace, first_folder]
+
+	context.globalState.update('workspace', updated_workspace);
+
+	console.log(context.globalState.get('workspace'));
 }
 
 /**
@@ -59,27 +74,23 @@ function saveWorkspaces() {
  */
 function activate(context) {
 
+	saveWorkspace(context);
+
+	let commandShowWelcome = vscode.commands.registerCommand('big-welcome.Big-Welcome', function () {
+		showWelcomePage(context);
+	});
+	context.subscriptions.push(commandShowWelcome);
+
 	const hasOpenWorkspace = vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0;
 
 	if (hasOpenWorkspace)
 		return;
 
 	showWelcomePage(context);
-
-	let workSpaceListener = vscode.workspace.onDidChangeConfiguration((event) => {
-		saveWorkspaces();
-	});
-
-	let commandShowWelcome = vscode.commands.registerCommand('big-welcome.Big-Welcome', function () {
-		showWelcomePage(context);
-	});
-
-	context.subscriptions.push(workSpaceListener);
-	context.subscriptions.push(commandShowWelcome);
 }
 
 // Deconstructor
-function deactivate() {}
+function deactivate() { }
 
 module.exports = {
 	activate,
