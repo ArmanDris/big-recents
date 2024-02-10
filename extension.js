@@ -47,6 +47,8 @@ function showWelcomePage(context) {
 	);
 
 	panel.webview.html = getHtmlContent(context);
+
+	sendWorkspacesToIndex(context, panel);
 }
 
 function saveWorkspace(context) {
@@ -67,6 +69,11 @@ function saveWorkspace(context) {
 	context.globalState.update('workspace', updated_workspace);
 
 	console.log(context.globalState.get('workspace'));
+}
+
+function sendWorkspacesToIndex(context, panel) {
+	const workspaces = context.globalState.get('workspace', []);
+	panel.webview.postMessage({ command: 'sendWorkspaces', data: workspaces });
 }
 
 /**

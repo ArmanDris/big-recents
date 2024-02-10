@@ -56,56 +56,68 @@
 </head>
 
 <body>
-    <h1>Welcome</h1>
-    <ul>
+    <h1 id="hehe">Welcome</h1>
+    <ul id="projectList">
         <li class="projectItem">
             <h2>Webview Sample</h2>
             <a class="unexpandedPath">~/Documents/vscode-extension-samples/webview-sample/</a>
-        </li>
-        <li class="projectItem">
-            <h2>Website</h2>
-            <a class="unexpandedPath">~/Documents/website</a>
-        </li>
-        <li class="projectItem">
-            <h2>CPSC330</h2>
-            <a class="unexpandedPath">~/Documents/CS330/</a>
-        </li>
-        <li class="projectItem">
-            <h2>Sudoku</h2>
-            <a class="unexpandedPath">~/Documents/Sudoku</a>
         </li>
     </ul>
 
     <script>
         const vscode = acquireVsCodeApi();
 
+        // Listen for workspaces to be sent
+        window.addEventListener('message', event => {
+            const message = event.data;
 
-        // const button = document.getElementById('project');
-        // const unexpandedPath = document.getElementById('unexpandedPath').textContent;
-        // button.addEventListener('click', () => {
-        //     // Send a message from the WebView to the extension
-        //     vscode.postMessage({
-        //         command: 'openWorkspace',
-        //         unexpanded_path: unexpandedPath,
-        //     });
-        // });
+            switch (message.command) {
+                case 'sendWorkspaces':
+                    const workspaces = message.data;
 
-        const projectItems = document.querySelectorAll('.projectItem');
-        projectItems.forEach(function (item) {
-            item.addEventListener('click', function () {
-                const pathElement = item.querySelector('.unexpandedPath');
-                
-                if (!pathElement) 
-                    return;
+                    const ul = document.getElementById('projectList');
 
-                const unexpandedPath = pathElement.textContent;
-                vscode.postMessage({
-                    command: 'openWorkspace',
-                    unexpanded_path: unexpandedPath,
-                });
+                    // Clear existing list items
+                    ul.innerHTML = '';
 
-            });
+                    workspaces.forEach(workspace => {
+
+                        const li = document.createElement('li');
+                        li.classList.add('projectItem');
+
+                        const directoryName = workspace.split('/').pop();
+                        const h2 = document.createElement('h2');
+                        h2.textContent = directoryName;
+                        li.appendChild(h2);
+
+                        const a = document.createElement('a');
+                        a.classList.add('unexpandedPath');
+                        a.textContent = workspace;
+                        li.appendChild(a);
+
+                        ul.appendChild(li);
+                    });
+                    break;
+            }
         });
+
+        const ulProjectList = document.getElementById('projectList');
+        ulProjectList.addEventListener('click', function (event) {
+            const item = event.target.closest('.projectItem');
+            
+            if (item) {
+                const pathElement = item.querySelector('.unexpandedPath');
+
+                if (pathElement) {
+                    const unexpandedPath = pathElement.textContent;
+                    vscode.postMessage({
+                        command: 'openWorkspace',
+                        unexpanded_path: unexpandedPath,
+                    });
+                }
+            }
+        });
+
     </script>
 </body>
 
