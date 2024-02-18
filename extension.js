@@ -33,7 +33,7 @@ function showWelcomePage(context) {
 		}
 	);
 
-	const iconPath = vscode.Uri.file(path.join(context.extensionPath, 'src', 'sun.png'));
+	const iconPath = vscode.Uri.file(path.join(context.extensionPath, 'src', 'open-book.png'));
 	panel.iconPath = iconPath;
 
 	panel.webview.onDidReceiveMessage(
@@ -59,16 +59,14 @@ function saveWorkspace(context) {
 		return;
 
 	const first_folder = workspace[0];
+	
 	const old_workspace = context.globalState.get('workspace', []);
 
-	if (old_workspace.includes(first_folder))
-		return;
+	const filtered_workspace = old_workspace.filter(folder => folder !== first_folder);
 
-	const updated_workspace = [...old_workspace, first_folder]
+	const updated_workspace = [...filtered_workspace, first_folder]
 
 	context.globalState.update('workspace', updated_workspace);
-
-	console.log(context.globalState.get('workspace'));
 }
 
 function sendWorkspacesToIndex(context, panel) {

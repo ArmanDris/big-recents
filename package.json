@@ -2,7 +2,7 @@
   "name": "big-welcome",
   "displayName": "Big Welcome",
   "description": "homepage that displays recent projects in big juicy letters",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "engines": {
     "vscode": "^1.86.0"
   },
@@ -32,5 +32,11 @@
     "typescript": "^5.3.3",
     "@vscode/test-cli": "^0.0.4",
     "@vscode/test-electron": "^2.3.9"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ArmanDris/big-welcome.git"
+  },
+  "publisher": "Arman",
+  "Icon": "src/open-book.png"
 }

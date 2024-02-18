@@ -11,6 +11,7 @@
         }
 
         body {
+            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -19,8 +20,9 @@
 
         h1 {
             font-size: 46px;
-            line-height: 3em;
+            margin-top: 10vh;
             font-weight: normal;
+            transition: 500ms;
         }
 
         li {
@@ -31,12 +33,12 @@
             padding: 20px;
             padding-bottom: 26px;
             cursor: pointer;
-            transition: 750ms;
             overflow-x: hidden;
+            transition: 500ms;
         }
 
         li:hover {
-            background: #ffffff20;
+            background: var(--vscode-editor-selectionHighlightBackground);
             overflow-x: auto;
         }
 
@@ -52,6 +54,49 @@
             width: 100%;
             white-space: nowrap;
         }
+
+        #settings {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            right: 10vw;
+            top: 10vh;
+            width: 40px;
+            height: 30px;
+            border-radius: 8px;
+            padding: 16px;
+            transition: 500ms;
+        }
+
+        #settings:hover {
+            background: var(--vscode-editor-selectionHighlightBackground);
+        }
+
+        .line {
+            height: 3px;
+            width: 100%;
+            background: var(--vscode-editor-foreground);
+            border-radius: 2px;
+        }
+
+        #settingsPanel {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            right: 10vw;
+            top: calc(10vh + 30px + 16px * 2);
+            width: 200px;
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.3s ease-out;
+            /* Adjust timing and easing as desired */
+        }
     </style>
 </head>
 
@@ -63,6 +108,15 @@
             <a class="unexpandedPath">~/Documents/vscode-extension-samples/webview-sample/</a>
         </li>
     </ul>
+    <div id="settings">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+    </div>
+    <div id="settingsPanel" style="display: none;">
+        <!-- Content of your settings panel goes here -->
+        <p>Hello</p>
+    </div>
 
     <script>
         const vscode = acquireVsCodeApi();
@@ -104,7 +158,7 @@
         const ulProjectList = document.getElementById('projectList');
         ulProjectList.addEventListener('click', function (event) {
             const item = event.target.closest('.projectItem');
-            
+
             if (item) {
                 const pathElement = item.querySelector('.unexpandedPath');
 
@@ -115,6 +169,15 @@
                         unexpanded_path: unexpandedPath,
                     });
                 }
+            }
+        });
+
+        document.getElementById('settings').addEventListener('click', function () {
+            var panel = document.getElementById('settingsPanel');
+            if (panel.style.maxHeight) {
+                panel.style.maxHeight = null;
+            } else {
+                panel.style.maxHeight = panel.scrollHeight + "px"; // scrollHeight gives the height of the panel
             }
         });
 
