@@ -26,6 +26,10 @@ The settings button currently does not do anything
 
 ## Release Notes
 
+### 1.1.1
+
+Fixed icon path
+
 ### 1.1.0
 
 New workspaces now appear on top. Changed icon & added extension icon in marketplace

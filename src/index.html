@@ -95,7 +95,6 @@
             overflow: hidden;
             max-height: 0;
             transition: max-height 0.3s ease-out;
-            /* Adjust timing and easing as desired */
         }
     </style>
 </head>
@@ -104,8 +103,7 @@
     <h1 id="hehe">Welcome</h1>
     <ul id="projectList">
         <li class="projectItem">
-            <h2>Webview Sample</h2>
-            <a class="unexpandedPath">~/Documents/vscode-extension-samples/webview-sample/</a>
+            <h2>Workspaces you open will be added here, allowing you to seamlessly switch between them.</h2>
         </li>
     </ul>
     <div id="settings">
@@ -114,7 +112,7 @@
         <div class="line"></div>
     </div>
     <div id="settingsPanel" style="display: none;">
-        <!-- Content of your settings panel goes here -->
+        <!-- Content of settings panel goes here -->
         <p>Hello</p>
     </div>
 
@@ -128,6 +126,9 @@
             switch (message.command) {
                 case 'sendWorkspaces':
                     const workspaces = message.data;
+
+                    if (!workspaces || workspaces.length === 0)
+                        return;
 
                     const ul = document.getElementById('projectList');
 
@@ -149,7 +150,7 @@
                         a.textContent = workspace;
                         li.appendChild(a);
 
-                        ul.appendChild(li);
+                        ul.insertBefore(li, ul.firstChild);
                     });
                     break;
             }
