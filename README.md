@@ -26,6 +26,10 @@ The settings button currently does not do anything
 
 ## Release Notes
 
+### 1.1.2
+
+Fixed but where workspaces would appear in the wrong order.
+
 ### 1.1.1
 
 Fixed icon path
