@@ -106,14 +106,6 @@
             <h2>Workspaces you open will be added here, allowing you to seamlessly switch between them.</h2>
         </li>
     </ul>
-    <div id="settings">
-        <div class="line"></div>
-        <div class="line"></div>
-        <div class="line"></div>
-    </div>
-    <div id="settingsPanel" style="display: none;">
-        <!-- Content of settings panel goes here -->
-        <p>Hello</p>
     </div>
 
     <script>
@@ -170,15 +162,6 @@
                         unexpanded_path: unexpandedPath,
                     });
                 }
-            }
-        });
-
-        document.getElementById('settings').addEventListener('click', function () {
-            var panel = document.getElementById('settingsPanel');
-            if (panel.style.maxHeight) {
-                panel.style.maxHeight = null;
-            } else {
-                panel.style.maxHeight = panel.scrollHeight + "px"; // scrollHeight gives the height of the panel
             }
         });
 
