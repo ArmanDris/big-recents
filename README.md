@@ -26,9 +26,12 @@ The settings button currently does not do anything
 
 ## Release Notes
 
+### 1.1.3
+Invalid paths are not automatically removed from list. So when you move/delete folders their old entries will not clutter up the space.
+
 ### 1.1.2
 
-Fixed but where workspaces would appear in the wrong order.
+Fixed bug where workspaces would appear in the wrong order.
 
 ### 1.1.1
 
