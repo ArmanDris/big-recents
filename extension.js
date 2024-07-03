@@ -23,6 +23,16 @@ function openWorkspaceFunction(unexpanded_path) {
 	vscode.commands.executeCommand('vscode.openFolder', workspaceUri);
 }
 
+// Remove paths that are no longer valid
+function cleanWorkspaces(context) {
+	const workspaces = context.globalState.get('workspace', []);
+	let filtered_workspace = workspaces.filter(unexpandedPath => {
+		const expandedPath = expandHomeDir(unexpandedPath);
+		return fs.existsSync(expandedPath);
+	})
+	context.globalState.update('workspace', filtered_workspace);
+}
+
 function showWelcomePage(context) {
 	const panel = vscode.window.createWebviewPanel(
 		'homePage',
@@ -47,6 +57,8 @@ function showWelcomePage(context) {
 	);
 
 	panel.webview.html = getHtmlContent(context);
+
+	cleanWorkspaces(context)
 
 	sendWorkspacesToIndex(context, panel);
 }
